@@ -1,0 +1,51 @@
+package net.homecredit.cbsa.rabbit.config;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@EnableRabbit
+@Configuration
+public class RabbitMQConfig {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(RabbitMQConfig.class);
+
+    @Value("${rabbitmq.hostname}")
+    private String hostname;// ="https://hrabbit01-hosel.kz.infra";
+
+    @Value("${rabbitmq.port}")
+    private int port;// = 15672;
+
+    @Value("${rabbitmq.username}")
+    private String username;// ="hsis_user";
+
+    @Value("${rabbitmq.password}")
+    private String password;// = "hsis_user";
+
+    @Value("${rabbitmq.virtual-host}")
+    private String virtualHost; // ="kz00c3";
+
+    @Bean("connectionFactoryTWO")
+    public ConnectionFactory connectionFactory() {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        connectionFactory.setPort(port);
+        connectionFactory.setHost(hostname);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
+        connectionFactory.setVirtualHost(virtualHost);
+        LOGGER.info("Rabbit connectionFactory setted");
+        return connectionFactory;
+    }
+
+    @Bean("rabbitTemplateTWO")
+    public RabbitTemplate rabbitTemplate() {
+        LOGGER.info("Rabbit Template setting");
+        return new RabbitTemplate(connectionFactory());
+    }
+}
