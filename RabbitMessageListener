@@ -1,0 +1,60 @@
+package net.homecredit.cbsa.rabbit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+
+public class RabbitMessageListener {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(RabbitMessageListener.class);
+
+    @RabbitListener(queues = "messageEnvelopeDto.incomingQueue")
+    public void listenMessageEnvelopeDto(String message) {
+        LOGGER.info("Received: messageEnvelopeDto.incomingQueue  " + message);
+    }
+
+    @RabbitListener(queues = "celAccountTransactions.incomingQueue")
+    public void listenCelAccountTransactions(String message) {
+        LOGGER.info("Received: celAccountTransactions.incomingQueue  " + message);
+    }
+
+    @RabbitListener(queues = "contractCreditAccount.incomingQueue")
+    public void listenContractCreditAccount(String message) {
+        LOGGER.info("Received: contractCreditAccount.incomingQueue  " + message);
+    }
+
+    @RabbitListener(queues = "contractFullInfo.incomingQueue")
+    public void listenContractFullInfo(String message) {
+        LOGGER.info("Received: contractFullInfo.incomingQueue  " + message);
+    }
+
+    @RabbitListener(queues = "incomingPayments.incomingQueue")
+    public void listenIncomingPayments(String message) {
+        LOGGER.info("Received: incomingPayments.incomingQueue  " + message);
+    }
+
+    @RabbitListener(queues = "loanServiceRequest.incomingQueue")
+    public void loanServiceRequest(String message) {
+        LOGGER.info("Received: loanServiceRequest.incomingQueue  " + message);
+    }
+
+    @RabbitListener(queues = "outgoingPayment.incomingQueue")
+    public void outgoingPayment(String message) {
+        LOGGER.info("Received: outgoingPayment.incomingQueue  " + message);
+    }
+
+    @RabbitListener(queues = "partner.incomingQueue")
+    public void partner(String message) {
+        LOGGER.info("Received: partner.incomingQueue  " + message);
+    }
+
+    @RabbitListener(queues = "refundPayments.incomingQueue")
+    public void refundPayments(String message) {
+        LOGGER.info("Received: refundPayments.incomingQueue  " + message);
+    }
+
+    @RabbitListener(queues = "saleContract.incomingQueue")
+    public void saleContract(String message) {
+        LOGGER.info("Received: saleContract.incomingQueue  " + message);
+    }
+}
