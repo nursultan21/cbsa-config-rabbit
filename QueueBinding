@@ -1,0 +1,93 @@
+package net.homecredit.cbsa.rabbit.config;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class QueueBinding {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(QueueBinding.class);
+
+     @Value("${rabbitmq.exchange}")
+    private String exchange;// ="CBSAExchange";
+
+
+    @Bean
+    public Queue incomingPaymentsQueue() {
+        return new Queue("incomingPayments.outgoingQueue");
+    }
+
+    @Bean
+    public Queue refundPaymentsQueue() {
+        return new Queue("refundPayments.outgoingQueue");
+    }
+
+
+    @Bean
+    public Queue contractCreditAccountQueue() {
+        return new Queue("contractCreditAccount.outgoingQueue");
+    }
+
+    @Bean
+    public Queue outgoingPaymentQueue() {
+        return new Queue("outgoingPayment.outgoingQueue");
+    }
+
+    @Bean
+    public Queue saleContractQueue() {
+        return new Queue("saleContract.outgoingQueue");
+    }
+
+    @Bean
+    public DirectExchange exchange() {
+        return new DirectExchange(exchange);
+    }
+
+    @Bean
+    public Binding incomingPaymentsQueueBinding(Queue incomingPaymentsQueue, DirectExchange exchange) {
+        LOGGER.info("Rabbit incomingPaymentsQueueBinding");
+        return BindingBuilder.bind(incomingPaymentsQueue)
+                .to(exchange)
+                .with("incomingPaymentsKey");
+    }
+
+    @Bean
+    public Binding refundPaymentsQueueBinding(Queue refundPaymentsQueue, DirectExchange exchange) {
+        LOGGER.info("Rabbit refundPaymentsQueueBinding");
+        return BindingBuilder.bind(refundPaymentsQueue)
+                .to(exchange)
+                .with("refundPaymentsKey");
+    }
+
+    @Bean
+    public Binding contractCreditAccountQueueBinding(Queue contractCreditAccountQueue, DirectExchange exchange) {
+        LOGGER.info("Rabbit contractCreditAccountQueueBinding");
+        return BindingBuilder.bind(contractCreditAccountQueue)
+                .to(exchange)
+                .with("contractCreditAccountKey");
+    }
+
+    @Bean
+    public Binding outgoingPaymentBinding(Queue outgoingPaymentQueue, DirectExchange exchange) {
+        LOGGER.info("Rabbit outgoingPaymentBinding");
+        return BindingBuilder.bind(outgoingPaymentQueue)
+                .to(exchange)
+                .with("outgoingPaymentKey");
+    }
+
+    @Bean
+    public Binding saleContractQueueBinding(Queue saleContractQueue, DirectExchange exchange) {
+        LOGGER.info("Rabbit saleContractQueueBinding");
+        return BindingBuilder.bind(saleContractQueue)
+                .to(exchange)
+                .with("saleContractKey");
+    }
+
+}
