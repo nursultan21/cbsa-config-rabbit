@@ -1,0 +1,47 @@
+package net.homecredit.cbsa.rabbit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+@Service
+public class RabbitMessageSender {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(RabbitMessageSender.class);
+
+    @Value("${rabbitmq.exchange}")
+    private String exchange; // ="CBSAExchange";
+
+    @Autowired
+    @Qualifier("rabbitTemplateTWO")
+    private RabbitTemplate rabbitTemplate;
+
+    public void sendMessageToIncomingPaymentsQueue(String message){
+        LOGGER.info("Rabbit sending message to sendMessageToIncomingPaymentsQueue");
+        rabbitTemplate.convertAndSend(exchange,"incomingPaymentsKey",message);
+    }
+
+    public void sendMessageToRefundPaymentQueue(String message){
+        LOGGER.info("Rabbit sending message to sendMessageToRefundPaymentQueue");
+        rabbitTemplate.convertAndSend(exchange,"refundPaymentsKey",message);
+    }
+
+    public void sendMessageToContractCreditAccountQueue(String message){
+        LOGGER.info("Rabbit sending message to sendMessageToContractCreditAccountQueue");
+        rabbitTemplate.convertAndSend(exchange,"contractCreditAccountKey",message);
+    }
+
+    public void sendMessageToOutgoingPaymentQueue(String message){
+        LOGGER.info("Rabbit sending message to sendMessageToOutgoingPaymentQueue");
+        rabbitTemplate.convertAndSend(exchange,"outgoingPaymentKey",message);
+    }
+
+    public void sendMessageToSaleContractQueue(String message){
+        LOGGER.info("Rabbit sending message to sendMessageToSaleContractQueue");
+        rabbitTemplate.convertAndSend(exchange,"saleContractKey",message);
+    }
+}
